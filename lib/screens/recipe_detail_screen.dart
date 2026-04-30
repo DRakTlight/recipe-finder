@@ -9,10 +9,7 @@ import '../utils/app_theme.dart';
 import '../utils/recipe_image.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
-  const RecipeDetailScreen({
-    super.key,
-    required this.recipe,
-  });
+  const RecipeDetailScreen({super.key, required this.recipe});
 
   final Recipe recipe;
 
@@ -40,7 +37,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
       _loading = true;
       _error = null;
     });
-
+    //จุดเชื่อมต่อ Backend
     try {
       final detail = await _api.fetchRecipeDetail(widget.recipe.id);
       if (!mounted) return;
@@ -56,12 +53,12 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   Future<void> _addToShoppingList() async {
     final ingredients = _detail?.ingredients ?? [];
     if (ingredients.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No ingredients to add')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('No ingredients to add')));
       return;
     }
-
+    //จุดเชื่อมต่อ Backend
     try {
       await _grocery.addItems(ingredients, recipeTitle: widget.recipe.title);
       if (mounted) {
@@ -69,7 +66,11 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+                const Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
                 const SizedBox(width: 8),
                 Text('${ingredients.length} items added to shopping list'),
               ],
@@ -81,7 +82,10 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: AppColors.error),
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: AppColors.error,
+          ),
         );
       }
     }
@@ -132,6 +136,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                         final isFav = snapshot.data ?? false;
                         return IconButton(
                           onPressed: () async {
+                            //จุดเชื่อมต่อ Backend
                             try {
                               await _favorites.toggleFavorite(widget.recipe);
                             } catch (e) {
@@ -147,9 +152,13 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                             transitionBuilder: (child, animation) =>
                                 ScaleTransition(scale: animation, child: child),
                             child: Icon(
-                              isFav ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                              isFav
+                                  ? Icons.favorite_rounded
+                                  : Icons.favorite_border_rounded,
                               key: ValueKey(isFav),
-                              color: isFav ? AppColors.favorite : AppColors.textSecondary,
+                              color: isFav
+                                  ? AppColors.favorite
+                                  : AppColors.textSecondary,
                               size: 22,
                             ),
                           ),
@@ -163,8 +172,13 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
               background: Hero(
                 tag: 'recipe_image_${widget.recipe.id}',
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(24)),
-                  child: RecipeImage(imageUrl: widget.recipe.imageUrl, fit: BoxFit.cover),
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(24),
+                  ),
+                  child: RecipeImage(
+                    imageUrl: widget.recipe.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -219,29 +233,41 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                     child: _loading
                         ? _buildLoading()
                         : _error != null
-                            ? _buildError()
-                            : _buildIngredients(),
+                        ? _buildError()
+                        : _buildIngredients(),
                   ),
 
                   // Add to shopping list button
-                  if (!_loading && _error == null && (_detail?.ingredients.isNotEmpty ?? false)) ...[
+                  if (!_loading &&
+                      _error == null &&
+                      (_detail?.ingredients.isNotEmpty ?? false)) ...[
                     const SizedBox(height: 16),
                     SizedBox(
                       width: double.infinity,
                       height: 52,
                       child: ElevatedButton.icon(
-                        onPressed: AppFlags.firebaseEnabled ? _addToShoppingList : null,
-                        icon: const Icon(Icons.add_shopping_cart_rounded, size: 20),
+                        onPressed: AppFlags.firebaseEnabled
+                            ? _addToShoppingList
+                            : null,
+                        icon: const Icon(
+                          Icons.add_shopping_cart_rounded,
+                          size: 20,
+                        ),
                         label: const Text(
                           'Add to Shopping List',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.accent,
                           foregroundColor: Colors.white,
                           disabledBackgroundColor: AppColors.border,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppRadius.button),
+                            borderRadius: BorderRadius.circular(
+                              AppRadius.button,
+                            ),
                           ),
                           elevation: 0,
                         ),
@@ -252,7 +278,10 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                         padding: EdgeInsets.only(top: 6),
                         child: Text(
                           'Requires Firebase to save shopping list',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 12,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -269,10 +298,19 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   Widget _buildLoading() {
     return const Row(
       children: [
-        SizedBox(width: 18, height: 18,
-          child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary)),
+        SizedBox(
+          width: 18,
+          height: 18,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: AppColors.primary,
+          ),
+        ),
         SizedBox(width: 12),
-        Text('Loading ingredients...', style: TextStyle(color: AppColors.textSecondary)),
+        Text(
+          'Loading ingredients...',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
       ],
     );
   }
@@ -281,10 +319,15 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Could not load ingredients',
-            style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.text)),
+        const Text(
+          'Could not load ingredients',
+          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.text),
+        ),
         const SizedBox(height: 6),
-        Text(_error!, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+        Text(
+          _error!,
+          style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+        ),
         const SizedBox(height: 12),
         OutlinedButton.icon(
           onPressed: _load,
@@ -293,7 +336,9 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.primary,
             side: const BorderSide(color: AppColors.primary),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.button)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.button),
+            ),
           ),
         ),
       ],
@@ -303,8 +348,10 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   Widget _buildIngredients() {
     final ingredients = _detail?.ingredients ?? const [];
     if (ingredients.isEmpty) {
-      return const Text('No ingredient data.',
-          style: TextStyle(color: AppColors.textSecondary));
+      return const Text(
+        'No ingredient data.',
+        style: TextStyle(color: AppColors.textSecondary),
+      );
     }
 
     return Column(
@@ -318,7 +365,11 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 color: AppColors.primaryPale,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.receipt_long_rounded, size: 18, color: AppColors.primary),
+              child: const Icon(
+                Icons.receipt_long_rounded,
+                size: 18,
+                color: AppColors.primary,
+              ),
             ),
             const SizedBox(width: 10),
             Text(
@@ -353,7 +404,11 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 Expanded(
                   child: Text(
                     ingredient,
-                    style: const TextStyle(color: AppColors.text, height: 1.35, fontSize: 14),
+                    style: const TextStyle(
+                      color: AppColors.text,
+                      height: 1.35,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ],
@@ -368,7 +423,11 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
 // ─── Meta Pill ───
 
 class _MetaPill extends StatelessWidget {
-  const _MetaPill({required this.icon, required this.label, required this.color});
+  const _MetaPill({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
   final IconData icon;
   final String label;
   final Color color;
@@ -386,7 +445,14 @@ class _MetaPill extends StatelessWidget {
         children: [
           Icon(icon, size: 16, color: color),
           const SizedBox(width: 6),
-          Text(label, style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );

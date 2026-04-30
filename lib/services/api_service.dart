@@ -5,27 +5,17 @@ import 'package:http/http.dart' as http;
 import '../models/recipe.dart';
 
 class ApiService {
-  ApiService({
-    http.Client? client,
-  }) : _client = client ?? http.Client();
+  ApiService({http.Client? client}) : _client = client ?? http.Client();
 
   final http.Client _client;
 
-  // In-memory cache to avoid burning API quota on repeated searches.
   static final Map<String, List<Recipe>> _searchCache = {};
   static final Map<int, Recipe> _detailCache = {};
 
   static const String _baseUrl = 'api.spoonacular.com';
 
-  // TODO: ใส่ API key ของคุณที่นี่ (Spoonacular)
   static const String _apiKey = '27dc9b6962334072841efd90ae66c33c';
 
-  /// Search recipes with optional filters.
-  ///
-  /// [type] — meal type: main course, dessert, appetizer, breakfast, etc.
-  /// [cuisine] — Italian, Thai, Mexican, Japanese, Chinese, Indian, etc.
-  /// [diet] — vegetarian, vegan, gluten free, etc.
-  /// [maxReadyTime] — max cooking time in minutes.
   Future<List<Recipe>> searchRecipes({
     required String query,
     int number = 20,

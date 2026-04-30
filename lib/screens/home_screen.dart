@@ -26,8 +26,16 @@ const _categories = <_Category>[
 ];
 
 const _cuisines = [
-  'Italian', 'Thai', 'Mexican', 'Japanese', 'Chinese',
-  'Indian', 'American', 'Mediterranean', 'Korean', 'French',
+  'Italian',
+  'Thai',
+  'Mexican',
+  'Japanese',
+  'Chinese',
+  'Indian',
+  'American',
+  'Mediterranean',
+  'Korean',
+  'French',
 ];
 
 const _diets = ['Vegetarian', 'Vegan', 'Gluten Free', 'Dairy Free'];
@@ -85,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _loading = true;
       _error = null;
     });
-
+    //เชื่อมBackend
     try {
       final results = await _api.searchRecipes(
         query: trimmed,
@@ -94,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
         diet: _selectedDiet,
         maxReadyTime: _maxReadyTime,
       );
+      //เชื่อมBackend
       if (!mounted) return;
       setState(() => _recipes = results);
     } catch (e) {
@@ -127,7 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
             return Container(
               decoration: const BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(AppRadius.sheet),
+                ),
               ),
               padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
               child: Column(
@@ -137,7 +148,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Handle bar
                   Center(
                     child: Container(
-                      width: 40, height: 4,
+                      width: 40,
+                      height: 4,
                       margin: const EdgeInsets.only(bottom: 20),
                       decoration: BoxDecoration(
                         color: AppColors.border,
@@ -150,8 +162,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       const Icon(Icons.tune_rounded, color: AppColors.primary),
                       const SizedBox(width: 8),
-                      const Text('Filters',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.text)),
+                      const Text(
+                        'Filters',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.text,
+                        ),
+                      ),
                       const Spacer(),
                       TextButton(
                         onPressed: () {
@@ -161,14 +179,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             tempMaxTime = null;
                           });
                         },
-                        child: const Text('Reset', style: TextStyle(color: AppColors.accent)),
+                        child: const Text(
+                          'Reset',
+                          style: TextStyle(color: AppColors.accent),
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 20),
 
                   // Cuisine
-                  const Text('Cuisine', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.text)),
+                  const Text(
+                    'Cuisine',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.text,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -178,15 +205,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       return ChoiceChip(
                         label: Text(c),
                         selected: selected,
-                        onSelected: (v) => setSheetState(() => tempCuisine = v ? c : null),
+                        onSelected: (v) =>
+                            setSheetState(() => tempCuisine = v ? c : null),
                         selectedColor: AppColors.primaryPale,
                         labelStyle: TextStyle(
                           color: selected ? AppColors.primary : AppColors.text,
-                          fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                          fontWeight: selected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppRadius.chip),
-                          side: BorderSide(color: selected ? AppColors.primary : AppColors.border),
+                          side: BorderSide(
+                            color: selected
+                                ? AppColors.primary
+                                : AppColors.border,
+                          ),
                         ),
                         showCheckmark: false,
                       );
@@ -195,7 +229,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 20),
 
                   // Diet
-                  const Text('Diet', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.text)),
+                  const Text(
+                    'Diet',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.text,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -205,16 +245,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       return ChoiceChip(
                         label: Text(d),
                         selected: selected,
-                        onSelected: (v) =>
-                            setSheetState(() => tempDiet = v ? d.toLowerCase() : null),
+                        onSelected: (v) => setSheetState(
+                          () => tempDiet = v ? d.toLowerCase() : null,
+                        ),
                         selectedColor: AppColors.primaryPale,
                         labelStyle: TextStyle(
                           color: selected ? AppColors.primary : AppColors.text,
-                          fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                          fontWeight: selected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppRadius.chip),
-                          side: BorderSide(color: selected ? AppColors.primary : AppColors.border),
+                          side: BorderSide(
+                            color: selected
+                                ? AppColors.primary
+                                : AppColors.border,
+                          ),
                         ),
                         showCheckmark: false,
                       );
@@ -225,8 +272,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Max cooking time
                   Row(
                     children: [
-                      const Text('Max Cooking Time',
-                          style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.text)),
+                      const Text(
+                        'Max Cooking Time',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.text,
+                        ),
+                      ),
                       const Spacer(),
                       Text(
                         tempMaxTime == null ? 'Any' : '≤ ${tempMaxTime!} min',
@@ -276,8 +328,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         elevation: 0,
                       ),
-                      child: const Text('Apply Filters',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                      child: const Text(
+                        'Apply Filters',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -348,15 +405,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   onSubmitted: (_) => _performSearch(),
                   decoration: InputDecoration(
                     hintText: 'Search recipes (e.g., pasta)',
-                    hintStyle: const TextStyle(color: AppColors.textSecondary, fontSize: 15),
+                    hintStyle: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 15,
+                    ),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 14),
-                    prefixIcon: Icon(Icons.search_rounded, color: AppColors.primary.withOpacity(0.6)),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 14,
+                    ),
+                    prefixIcon: Icon(
+                      Icons.search_rounded,
+                      color: AppColors.primary.withOpacity(0.6),
+                    ),
                     suffixIcon: _loading
                         ? const Padding(
                             padding: EdgeInsets.all(12),
                             child: SizedBox(
-                              width: 20, height: 20,
+                              width: 20,
+                              height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
                                 color: AppColors.primary,
@@ -371,7 +438,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: AppColors.primary,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 18),
+                              child: const Icon(
+                                Icons.arrow_forward_rounded,
+                                color: Colors.white,
+                                size: 18,
+                              ),
                             ),
                           ),
                   ),
@@ -400,16 +471,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       decoration: AppDecorations.chip(selected: selected),
                       child: Row(
                         children: [
-                          Icon(cat.icon,
-                              size: 16,
-                              color: selected ? Colors.white : AppColors.textSecondary),
+                          Icon(
+                            cat.icon,
+                            size: 16,
+                            color: selected
+                                ? Colors.white
+                                : AppColors.textSecondary,
+                          ),
                           const SizedBox(width: 6),
                           Text(
                             cat.label,
                             style: TextStyle(
                               color: selected ? Colors.white : AppColors.text,
                               fontSize: 13,
-                              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                              fontWeight: selected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
                             ),
                           ),
                         ],
@@ -468,9 +545,13 @@ class _FilterButton extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Icon(Icons.tune_rounded,
-                size: 22,
-                color: activeCount > 0 ? AppColors.primary : AppColors.textSecondary),
+            Icon(
+              Icons.tune_rounded,
+              size: 22,
+              color: activeCount > 0
+                  ? AppColors.primary
+                  : AppColors.textSecondary,
+            ),
             if (activeCount > 0)
               Positioned(
                 top: -6,
@@ -483,7 +564,11 @@ class _FilterButton extends StatelessWidget {
                   ),
                   child: Text(
                     '$activeCount',
-                    style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
@@ -527,13 +612,29 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded, size: 48, color: AppColors.accent.withOpacity(0.5)),
+              Icon(
+                Icons.error_outline_rounded,
+                size: 48,
+                color: AppColors.accent.withOpacity(0.5),
+              ),
               const SizedBox(height: 12),
-              const Text('Could not load recipes',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.text)),
+              const Text(
+                'Could not load recipes',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  color: AppColors.text,
+                ),
+              ),
               const SizedBox(height: 6),
-              Text(error!, style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
-                  textAlign: TextAlign.center),
+              Text(
+                error!,
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 13,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),
@@ -545,13 +646,25 @@ class _Body extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.search_off_rounded, size: 48, color: AppColors.primary.withOpacity(0.3)),
+            Icon(
+              Icons.search_off_rounded,
+              size: 48,
+              color: AppColors.primary.withOpacity(0.3),
+            ),
             const SizedBox(height: 12),
-            const Text('No results found',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: AppColors.text)),
+            const Text(
+              'No results found',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: AppColors.text,
+              ),
+            ),
             const SizedBox(height: 6),
-            const Text('Try another keyword or filter.',
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+            const Text(
+              'Try another keyword or filter.',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+            ),
           ],
         ),
       );
@@ -576,7 +689,8 @@ class _ShimmerCard extends StatefulWidget {
   State<_ShimmerCard> createState() => _ShimmerCardState();
 }
 
-class _ShimmerCardState extends State<_ShimmerCard> with SingleTickerProviderStateMixin {
+class _ShimmerCardState extends State<_ShimmerCard>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
@@ -599,7 +713,8 @@ class _ShimmerCardState extends State<_ShimmerCard> with SingleTickerProviderSta
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        final opacity = 0.08 + 0.06 * (0.5 + 0.5 * (_controller.value * 2 - 1).abs());
+        final opacity =
+            0.08 + 0.06 * (0.5 + 0.5 * (_controller.value * 2 - 1).abs());
         return Container(
           height: 100,
           decoration: BoxDecoration(
@@ -635,7 +750,10 @@ class _RecipeCard extends StatelessWidget {
                 child: SizedBox(
                   width: 80,
                   height: 80,
-                  child: RecipeImage(imageUrl: recipe.imageUrl, fit: BoxFit.cover),
+                  child: RecipeImage(
+                    imageUrl: recipe.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(width: 14),
@@ -679,7 +797,11 @@ class _RecipeCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              const Icon(Icons.chevron_right_rounded, color: AppColors.textSecondary, size: 22),
+              const Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textSecondary,
+                size: 22,
+              ),
             ],
           ),
         ),
@@ -691,7 +813,11 @@ class _RecipeCard extends StatelessWidget {
 // ─── Info Pill ───
 
 class _InfoPill extends StatelessWidget {
-  const _InfoPill({required this.icon, required this.label, required this.color});
+  const _InfoPill({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
   final IconData icon;
   final String label;
   final Color color;
@@ -709,7 +835,14 @@ class _InfoPill extends StatelessWidget {
         children: [
           Icon(icon, size: 13, color: color),
           const SizedBox(width: 4),
-          Text(label, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );
